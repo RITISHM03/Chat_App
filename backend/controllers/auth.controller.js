@@ -53,7 +53,7 @@ export const signup =async (req,res)=>{
 export const login =async(req,res) =>{
  try {
     const { username,password} =req.body;
-    const user =await user.findOne({username});
+    const user =await User.findOne({username});
     const isPasswordCorrect =await bcrypt.compare(password,user?.password || "");
 
     if(!user || !isPasswordCorrect) {
@@ -62,7 +62,7 @@ export const login =async(req,res) =>{
     generateTokenAndSetCookie(user._id,res);
 
     res.status(200).json({
-        id:user._id,
+        _id:user._id,
         fullName:user.fullName,
         username:user.username,
         profilePic:user.profilePic,
@@ -81,7 +81,7 @@ export const logout = (req,res) =>{
         res.status(200).json({message:"logged out successfully"});
         
     } catch (error) {
-        console.log("Error in login controller",error.message);
+        console.log("Error in logout controller",error.message);
         res.status(500).json({error:"Internal Server Error"});
         
     }
